@@ -12,17 +12,11 @@ const upload = multer({
   limits: { fileSize: 20 * 1024 * 1024 }, // Max file size: 20MB
 });
 
-
 app.use(bodyParser.json({ limit: "20mb" }));
 app.use(cors());
 
-
-app.use("/", (req, res) => {
-  res.send("Server is running.");
-})
-
 mongoose
-  .connect("mongodb+srv://cbcontaoi:agrisystemsinstiIMS@asi-ims.adzaodf.mongodb.net/?retryWrites=true&w=majority&appName=ASI-IMS", {
+  .connect("mongodb://127.0.0.1:27017/asi-documents", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -140,8 +134,6 @@ app.post("/admin/signin", async (req, res) => {
   }
 });
 
-const port = process.env.PORT || 3000
-
-app.listen(port, console.log("Server started on PORT " + {port}));
+app.listen(3001, () => console.log("Server started on Port 3001"));
 
 
