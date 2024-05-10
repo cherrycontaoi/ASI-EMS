@@ -12,12 +12,14 @@ const upload = multer({
   limits: { fileSize: 20 * 1024 * 1024 }, // Max file size: 20MB
 });
 
-app.use("/", (req, res) => {
-  res.send("Server is running.");
-})
 
 app.use(bodyParser.json({ limit: "20mb" }));
 app.use(cors());
+
+
+app.use("/", (req, res) => {
+  res.send("Server is running.");
+})
 
 mongoose
   .connect("mongodb+srv://cbcontaoi:agrisystemsinstiIMS@asi-ims.adzaodf.mongodb.net/?retryWrites=true&w=majority&appName=ASI-IMS", {
@@ -30,18 +32,18 @@ mongoose
 const Document = require("./models/Document");
 const Admin = require("./models/Admin");
 
-app.get("https://asi-ems.vercel.app/documents", async (req, res) => {
+app.get("/documents", async (req, res) => {
   const documents = await Document.find();
   res.json(documents);
 });
 
-app.get("https://asi-ems.vercel.app/admins", async (req, res) => {
+app.get("/admins", async (req, res) => {
   const admins = await Admin.find();
   res.json(admins);
 });
 
 // Handle file upload
-app.post("https://asi-ems.vercel.app/document/new", upload.single("documentCopy"), async (req, res) => {
+app.post("/document/new", upload.single("documentCopy"), async (req, res) => {
   try {
     const document = new Document({
       documentType: req.body.documentType,
@@ -72,7 +74,7 @@ app.post("https://asi-ems.vercel.app/document/new", upload.single("documentCopy"
 //   res.json(result);
 // });
 
-app.get("https://asi-ems.vercel.app/document/:id/view", async (req, res) => {
+app.get("/document/:id/view", async (req, res) => {
     try {
       const document = await Document.findById(req.params.id);
       if (!document) {
@@ -88,7 +90,7 @@ app.get("https://asi-ems.vercel.app/document/:id/view", async (req, res) => {
     }
   });
 
-app.delete("https://asi-ems.vercel.app/admin/document/delete/:id", async(req, res) => {
+app.delete("/admin/document/delete/:id", async(req, res) => {
   try {
     const result = await Document.findByIdAndDelete(req.params.id);
     res.json(result);
@@ -98,7 +100,7 @@ app.delete("https://asi-ems.vercel.app/admin/document/delete/:id", async(req, re
   }
 });
 
-app.post('https://asi-ems.vercel.app/admin/create', async (req, res) => {
+app.post('/admin/create', async (req, res) => {
   const { username, password } = req.body;
 
   try {
@@ -119,7 +121,7 @@ app.post('https://asi-ems.vercel.app/admin/create', async (req, res) => {
 });
 
 
-app.post("https://asi-ems.vercel.app/admin/signin", async (req, res) => {
+app.post("/admin/signin", async (req, res) => {
   
   const { username, password } = req.body;
   try {
