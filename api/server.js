@@ -12,6 +12,10 @@ const upload = multer({
   limits: { fileSize: 20 * 1024 * 1024 }, // Max file size: 20MB
 });
 
+app.use("/", (req, res) => {
+  res.send("Server is running.");
+})
+
 app.use(bodyParser.json({ limit: "20mb" }));
 app.use(cors());
 
