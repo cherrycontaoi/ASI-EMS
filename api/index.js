@@ -26,6 +26,10 @@ mongoose
 const Document = require("./models/Document");
 const Admin = require("./models/Admin");
 
+app.get("/", (req, res) => {
+  res.send("Express");
+})
+
 app.get("/documents", async (req, res) => {
   const documents = await Document.find();
   res.json(documents);
@@ -137,5 +141,7 @@ app.post("/admin/signin", async (req, res) => {
 const port = process.env.PORT || 3001;
 
 app.listen(port, () => console.log(`Server started on Port ${port}`));
+
+module.exports = app;
 
 
