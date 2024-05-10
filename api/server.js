@@ -16,7 +16,7 @@ app.use(bodyParser.json({ limit: "20mb" }));
 app.use(cors());
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/asi-documents", {
+  .connect("mongodb+srv://cbcontaoi:agrisystemsinstiIMS@asi-ims.adzaodf.mongodb.net/?retryWrites=true&w=majority&appName=ASI-IMS", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -26,18 +26,18 @@ mongoose
 const Document = require("./models/Document");
 const Admin = require("./models/Admin");
 
-app.get("/documents", async (req, res) => {
+app.get("https://asi-ems.vercel.app/documents", async (req, res) => {
   const documents = await Document.find();
   res.json(documents);
 });
 
-app.get("/admins", async (req, res) => {
+app.get("https://asi-ems.vercel.app/admins", async (req, res) => {
   const admins = await Admin.find();
   res.json(admins);
 });
 
 // Handle file upload
-app.post("/document/new", upload.single("documentCopy"), async (req, res) => {
+app.post("https://asi-ems.vercel.app/document/new", upload.single("documentCopy"), async (req, res) => {
   try {
     const document = new Document({
       documentType: req.body.documentType,
@@ -68,7 +68,7 @@ app.post("/document/new", upload.single("documentCopy"), async (req, res) => {
 //   res.json(result);
 // });
 
-app.get("/document/:id/view", async (req, res) => {
+app.get("https://asi-ems.vercel.app/document/:id/view", async (req, res) => {
     try {
       const document = await Document.findById(req.params.id);
       if (!document) {
@@ -84,7 +84,7 @@ app.get("/document/:id/view", async (req, res) => {
     }
   });
 
-app.delete("/admin/document/delete/:id", async(req, res) => {
+app.delete("https://asi-ems.vercel.app/admin/document/delete/:id", async(req, res) => {
   try {
     const result = await Document.findByIdAndDelete(req.params.id);
     res.json(result);
@@ -94,7 +94,7 @@ app.delete("/admin/document/delete/:id", async(req, res) => {
   }
 });
 
-app.post('/admin/create', async (req, res) => {
+app.post('https://asi-ems.vercel.app/admin/create', async (req, res) => {
   const { username, password } = req.body;
 
   try {
@@ -115,7 +115,7 @@ app.post('/admin/create', async (req, res) => {
 });
 
 
-app.post("/admin/signin", async (req, res) => {
+app.post("https://asi-ems.vercel.app/admin/signin", async (req, res) => {
   
   const { username, password } = req.body;
   try {
@@ -134,6 +134,8 @@ app.post("/admin/signin", async (req, res) => {
   }
 });
 
-app.listen(3001, () => console.log("Server started on Port 3001"));
+const port = process.env.PORT || 3000
+
+app.listen(port, console.log("Server started on PORT " + {port}));
 
 

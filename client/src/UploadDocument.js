@@ -5,7 +5,7 @@ import "./UploadDocument.css";
 import AdminSignin from "./AdminSignin";
 import { AuthProvider } from "./AuthContext";
 
-const API_BASE = "http://localhost:3001";
+const API_BASE = "https://asi-ems.vercel.app/";
 
 function UploadDocument() {
     const navigate = useNavigate();
