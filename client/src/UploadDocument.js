@@ -2,16 +2,26 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "./images/logo-asi.png";
 import "./UploadDocument.css";
+import AdminSignin from "./AdminSignin";
+import { AuthProvider } from "./AuthContext";
 
 const API_BASE = "http://localhost:3001";
 
 function UploadDocument() {
     const navigate = useNavigate();
+    const isAdminLoggedIn = sessionStorage.getItem('isAdminLoggedIn');
+    const [isHovering, setIsHovering] = useState(false);
+    const [isLoginFormVisible, setIsLoginFormVisible] = useState(false);
+  
+    const handleLogout = () => {
+      sessionStorage.removeItem('isAdminLoggedIn');
+      window.location.reload();
+    };
 
     const [documentCopy, setFile] = useState(null);
     const [newDocument, setNewDocument] = useState({
         documentType: "",
-        documentNumber: "", // Added documentNumber field
+        documentNumber: "", 
         uploaderName: "",
         description: "",
         dateAcquired: "",
@@ -86,8 +96,31 @@ function UploadDocument() {
             
             <div className="successful-upload">
                 <div className="header">
-                    <img src={logo} alt="" id="asi-logo"/>
-                </div>
+                    <a href="/">
+                        <img src={logo} alt="" id="asi-logo" />
+                    </a>
+                    {isAdminLoggedIn ? (
+                        <div id="admin-greeting" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+                        Hello, Admin!
+                        {isHovering && (
+                            <div id="admin-dropdown">
+                            <button className="admin-button" onClick={handleLogout}>Sign out</button>
+                            </div>
+                        )}
+                        </div>
+                    ) : (
+                        <div id="admin-login-div">
+                        {!isLoginFormVisible && (
+                            <text id="admin-login-button" onClick={() => setIsLoginFormVisible(true)}>Sign in</text>
+                        )}
+                        </div>
+                    )}
+                    {isLoginFormVisible && !isAdminLoggedIn && (
+                        <div className="admin-login-form">
+                        <AdminSignin />
+                        </div>
+                    )}
+                    </div>
                 <div className="upload-form-success">
                     Uploading Successful!
                     <div className="form-space">
@@ -136,13 +169,36 @@ function UploadDocument() {
 
     return (
         <>
-            <div className="header">
-                <img src={logo} alt="" id="asi-logo"/>
-            </div>
+          
             <div className="page-body">
-                
-                <a href="/">Return to Homepage</a>
-            
+                <div className="header">
+                    <a href="/">
+                        <img src={logo} alt="" id="asi-logo" />
+                    </a>
+                    {isAdminLoggedIn ? (
+                        <div id="admin-greeting" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+                        Hello, Admin!
+                        {isHovering && (
+                            <div id="admin-dropdown">
+                            <button className="admin-button" onClick={handleLogout}>Sign out</button>
+                            </div>
+                        )}
+                        </div>
+                    ) : (
+                        <div id="admin-login-div">
+                        {!isLoginFormVisible && (
+                            <text id="admin-login-button" onClick={() => setIsLoginFormVisible(true)}>Sign in</text>
+                        )}
+                        </div>
+                    )}
+                    {isLoginFormVisible && !isAdminLoggedIn && (
+                        <div className="admin-login-form">
+                        <AdminSignin />
+                        </div>
+                    )}
+                </div>
+
+
                 <div className="upload-form">
                 Upload Document
                 <div className="form-space">

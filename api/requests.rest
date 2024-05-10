@@ -15,4 +15,27 @@ Content-Type: application/json
 }
 
 ###
+POST http://localhost:3001/admin/create
+Content-Type: application/json
+
+{
+    "username": "Admin",
+    "password": "adminPassword12345"
+
+}
+
+###
 DELETE http://localhost:3001/document/delete/6628dae621a12701734f912b
+
+###
+
+POST http://localhost:3001/admin/signin
+Content-Type: application/json
+
+{
+    "username": "admin2",
+    "password": "adminPass"
+}
+
+###
+GET http://localhost:3001/admins

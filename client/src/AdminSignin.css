@@ -1,0 +1,25 @@
+#sign-field {
+    margin: 5px;
+    padding: 7px;
+    border: none;
+    border-radius: 3px;
+}
+
+#sign-in-button {
+    margin: 5px;
+    padding: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: none;
+    border-radius: 3px;
+    background-color: rgba(232, 176, 15, 1);
+    box-shadow: 0 20px 20px 0 rgba(0,0,0,0.10),0 20px 50px 0 rgba(0,0,0,0.3);
+    color: white;
+    font-weight: bold;
+}
+
+#sign-in-button:hover {
+    cursor: pointer;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.3),0 17px 50px 0 rgba(0,0,0,0.5);
+}
+

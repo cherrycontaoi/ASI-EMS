@@ -12,6 +12,10 @@
     font-size: 30px;
 }
 
+#asi-logo {
+    height: 70px;
+}
+
 .page-body {
     background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.25), rgba(144, 190, 165, 0.5), rgba(5, 68, 34, 0.75)), url("./images/ASI-bg.png");
     
@@ -26,7 +30,7 @@
     border-radius: 15px;
     display: flex;
     background-color: rgba(255, 255, 255, 1);
-    height: 50%;
+    height: 450px;
     width: 800px;
     margin: auto;
     margin-top: 4%;
@@ -75,6 +79,7 @@
     height: 35px;
     border: solid;
     border-color: #DBDBDB;
+    overflow: scroll;
 }
 
 #submit-button {
@@ -181,6 +186,7 @@
     font-weight: bold;
     color:#054422;
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+    
 }
 
 .return-button {
