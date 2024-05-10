@@ -16,7 +16,7 @@ app.use(bodyParser.json({ limit: "20mb" }));
 app.use(cors());
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/asi-documents", {
+  .connect("mongodb+srv://cbcontaoi:agrisystemsinstiIMS@asi-ims.adzaodf.mongodb.net/?retryWrites=true&w=majority&appName=ASI-IMS", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

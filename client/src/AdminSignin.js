@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import "./AdminSignin.css";
 
-const API_BASE = "http://localhost:3001";
+const API_BASE = "https://asi-equipment-management-system.vercel.app/";
 
 function AdminSignin() {
   const navigate = useNavigate();
