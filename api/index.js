@@ -14,6 +14,7 @@ const upload = multer({
 
 const corsOptions = {
   origin: 'https://asi-equipment-management-system.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
   optionsSuccessStatus: 200 // Some legacy browsers choke on 204
 };
 
