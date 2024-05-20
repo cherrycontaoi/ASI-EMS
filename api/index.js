@@ -21,7 +21,6 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(bodyParser.json({ limit: "20mb" }));
-app.use(cors());
 
 mongoose
   .connect("mongodb+srv://asi-ems-admin:L8BwSiDNtXSwPXxO@asi-ems.rhqk5fi.mongodb.net/?retryWrites=true&w=majority&appName=asi-ems", {
