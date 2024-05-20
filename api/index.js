@@ -12,6 +12,13 @@ const upload = multer({
   limits: { fileSize: 20 * 1024 * 1024 }, // Max file size: 20MB
 });
 
+const corsOptions = {
+  origin: 'https://asi-equipment-management-system.vercel.app',
+  optionsSuccessStatus: 200 // Some legacy browsers choke on 204
+};
+
+app.use(cors(corsOptions));
+
 app.use(bodyParser.json({ limit: "20mb" }));
 app.use(cors());
 
