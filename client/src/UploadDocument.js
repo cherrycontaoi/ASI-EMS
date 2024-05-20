@@ -59,28 +59,29 @@ function UploadDocument() {
     const addDocument = async () => {
         try {
             setShowValidation(false); // Hide validation popup
-
+    
             const formData = new FormData();
             formData.append("documentType", newDocument.documentType);
-            formData.append("documentNumber", newDocument.documentNumber); // Append documentNumber
+            formData.append("documentNumber", newDocument.documentNumber);
             formData.append("uploaderName", newDocument.uploaderName);
             formData.append("description", newDocument.description);
             formData.append("dateAcquired", newDocument.dateAcquired);
             formData.append("quantity", newDocument.quantity);
             formData.append("documentCopy", documentCopy);
-
+    
             const response = await fetch(API_BASE + "/document/new", {
                 method: "POST",
-                body: formData
+                body: formData,
+                credentials: 'include'
             });
-
+    
             if (!response.ok) {
                 throw new Error("Failed to add document");
             }
-
+    
             const data = await response.json();
             console.log("Document added successfully:", data);
-
+    
             setUploadSuccess(true);
         } catch (error) {
             console.error("Error adding document:", error.message);
