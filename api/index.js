@@ -39,6 +39,10 @@ mongoose
 const Document = require("./models/Document");
 const Admin = require("./models/Admin");
 
+app.get('/api/test', (req, res) => {
+  res.send('API is working');
+});
+
 app.get("/", (req, res) => {
   res.send("Express Server is running");
 });
