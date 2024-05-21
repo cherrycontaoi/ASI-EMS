@@ -7,23 +7,27 @@ const bcrypt = require("bcrypt");
 
 const app = express();
 
-// Configure CORS
-app.use(cors({
-  origin: 'https://asi-equipment-management-system.vercel.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
-// Configure body parser
-app.use(bodyParser.json({ limit: "20mb" }));
-
 // Configure multer for file uploads
 const upload = multer({
   limits: { fileSize: 20 * 1024 * 1024 }, // Max file size: 20MB
 });
 
-// Database connection
+app.use(bodyParser.json({ limit: "20mb" }));
+
+const allowedOrigins = ['https://asi-equipment-management-system.vercel.app'];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 mongoose
   .connect("mongodb+srv://asi-ems-admin:L8BwSiDNtXSwPXxO@asi-ems.rhqk5fi.mongodb.net/?retryWrites=true&w=majority&appName=asi-ems", {
     useNewUrlParser: true,
@@ -36,21 +40,20 @@ const Document = require("./models/Document");
 const Admin = require("./models/Admin");
 
 app.get("/", (req, res) => {
-  res.send("Express");
+  res.send("Express Server is running");
 });
 
-app.get("/documents", async (req, res) => {
+app.get("/api/documents", async (req, res) => {
   const documents = await Document.find();
   res.json(documents);
 });
 
-app.get("/admins", async (req, res) => {
+app.get("/api/admins", async (req, res) => {
   const admins = await Admin.find();
   res.json(admins);
 });
 
-// Handle file upload
-app.post("/document/new", upload.single("documentCopy"), async (req, res) => {
+app.post("/api/document/new", upload.single("documentCopy"), async (req, res) => {
   try {
     const document = new Document({
       documentType: req.body.documentType,
@@ -66,14 +69,29 @@ app.post("/document/new", upload.single("documentCopy"), async (req, res) => {
     });
 
     await document.save();
-    res.status(201).json({ message: "Document added successfully" });
+    res.json({ message: 'Document added successfully' });
   } catch (error) {
     console.error("Error adding document:", error.message);
     res.status(500).json({ error: "Failed to add document" });
   }
 });
 
-app.delete("/admin/document/delete/:id", async (req, res) => {
+app.get("/api/document/:id/view", async (req, res) => {
+  try {
+    const document = await Document.findById(req.params.id);
+    if (!document) {
+      return res.status(404).json({ error: "Document not found" });
+    }
+
+    res.set("Content-Type", document.documentCopy.contentType);
+    res.send(document.documentCopy.data);
+  } catch (error) {
+    console.error("Error serving document:", error.message);
+    res.status(500).json({ error: "Failed to serve document" });
+  }
+});
+
+app.delete("/api/admin/document/delete/:id", async (req, res) => {
   try {
     const result = await Document.findByIdAndDelete(req.params.id);
     res.json(result);
@@ -83,7 +101,7 @@ app.delete("/admin/document/delete/:id", async (req, res) => {
   }
 });
 
-app.post('/admin/create', async (req, res) => {
+app.post('/api/admin/create', async (req, res) => {
   const { username, password } = req.body;
 
   try {
@@ -103,7 +121,7 @@ app.post('/admin/create', async (req, res) => {
   }
 });
 
-app.post("/admin/signin", async (req, res) => {
+app.post("/api/admin/signin", async (req, res) => {
   const { username, password } = req.body;
   try {
     const admin = await Admin.findOne({ username });
@@ -122,6 +140,7 @@ app.post("/admin/signin", async (req, res) => {
 });
 
 const port = process.env.PORT || 3001;
+
 app.listen(port, () => console.log(`Server started on Port ${port}`));
 
 module.exports = app;
