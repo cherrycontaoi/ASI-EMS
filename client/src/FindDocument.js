@@ -4,7 +4,7 @@ import logo from "./images/logo-asi.png";
 import * as XLSX from "xlsx";
 import AdminSignin from "./AdminSignin";
 
-const API_BASE = "https://asi-equipment-management-system.vercel.app/";
+const API_BASE = "https://asi-ems-backend-1.onrender.com";
 
 function FindDocument({ isAdminLoggedIn }) {
 
