@@ -149,11 +149,11 @@ function FindDocument({ isAdminLoggedIn }) {
                         </button>
                     </div>
                     {isLoading ? (
-                        <div className="loading-screen">Fetching uploaded documents...</div>
+                        <div id="doc-count">Fetching uploaded documents...</div>
                     ) : (
                         <>
                             <div id="doc-count">
-                                Showing ${filteredDocuments.length} documents
+                                Showing {filteredDocuments.length} documents
                             </div>
                             <ul className="docs-area">
                                 <div className="list-of-docs">
