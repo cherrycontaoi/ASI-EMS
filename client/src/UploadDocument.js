@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import logo from "./images/logo-asi.png";
 import "./UploadDocument.css";
 import AdminSignin from "./AdminSignin";
-import { AuthProvider } from "./AuthContext";
 
 const API_BASE = "https://asi-ems-backend-1.onrender.com";
 
