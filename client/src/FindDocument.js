@@ -148,46 +148,48 @@ function FindDocument({ isAdminLoggedIn }) {
                             SEARCH
                         </button>
                     </div>
-                    <div id="doc-count">
-                        {isLoading ? "Fetching uploaded documents..." : `Showing ${filteredDocuments.length} documents`}
-                    </div>
                     {isLoading ? (
-                        <div className="loading-screen">Loading documents, please wait...</div>
+                        <div className="loading-screen">Fetching uploaded documents...</div>
                     ) : (
-                        <ul className="docs-area">
-                            <div className="list-of-docs">
-                                {filteredDocuments.map((document) => (
-                                    <div key={document._id} id="uploaded-doc-line">
-                                        <div className="doc-number">{document.documentNumber}</div>
-                                        <div className="doc-uploaderName">
-                                            <p>{document.uploaderName}</p>
-                                        </div>
-                                        <div className="doc-documentType">
-                                            <p>{document.documentType}</p>
-                                        </div>
-                                        <div className="doc-description">
-                                            <p>{document.description}</p>
-                                        </div>
-                                        <div className="doc-buttons">
-                                            <button
-                                                className="view-button"
-                                                onClick={() => handleViewDocument(document._id)}
-                                            >
-                                                View Document
-                                            </button>
-                                            {isAdminLoggedIn && (
-                                                <button
-                                                    className="delete-button"
-                                                    onClick={() => handleDeleteDocument(document._id)}
-                                                >
-                                                    Delete Document
-                                                </button>
-                                            )}
-                                        </div>
-                                    </div>
-                                ))}
+                        <>
+                            <div id="doc-count">
+                                Showing ${filteredDocuments.length} documents
                             </div>
-                        </ul>
+                            <ul className="docs-area">
+                                <div className="list-of-docs">
+                                    {filteredDocuments.map((document) => (
+                                        <div key={document._id} id="uploaded-doc-line">
+                                            <div className="doc-number">{document.documentNumber}</div>
+                                            <div className="doc-uploaderName">
+                                                <p>{document.uploaderName}</p>
+                                            </div>
+                                            <div className="doc-documentType">
+                                                <p>{document.documentType}</p>
+                                            </div>
+                                            <div className="doc-description">
+                                                <p>{document.description}</p>
+                                            </div>
+                                            <div className="doc-buttons">
+                                                <button
+                                                    className="view-button"
+                                                    onClick={() => handleViewDocument(document._id)}
+                                                >
+                                                    View Document
+                                                </button>
+                                                {isAdminLoggedIn && (
+                                                    <button
+                                                        className="delete-button"
+                                                        onClick={() => handleDeleteDocument(document._id)}
+                                                    >
+                                                        Delete Document
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </ul>
+                        </>
                     )}
                 </div>
             </div>
