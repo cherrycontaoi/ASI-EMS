@@ -12,16 +12,17 @@ function UploadDocument() {
     const isAdminLoggedIn = sessionStorage.getItem('isAdminLoggedIn');
     const [isHovering, setIsHovering] = useState(false);
     const [isLoginFormVisible, setIsLoginFormVisible] = useState(false);
-  
+    const [isLoading, setIsLoading] = useState(false); // Loading state
+
     const handleLogout = () => {
-      sessionStorage.removeItem('isAdminLoggedIn');
-      window.location.reload();
+        sessionStorage.removeItem('isAdminLoggedIn');
+        window.location.reload();
     };
 
     const [documentCopy, setFile] = useState(null);
     const [newDocument, setNewDocument] = useState({
         documentType: "",
-        documentNumber: "", 
+        documentNumber: "",
         uploaderName: "",
         description: "",
         dateAcquired: "",
@@ -38,7 +39,7 @@ function UploadDocument() {
         // Check if any of the fields are empty
         if (
             !newDocument.documentType ||
-            !newDocument.documentNumber || // Check for documentNumber
+            !newDocument.documentNumber ||
             !newDocument.uploaderName ||
             !newDocument.description ||
             !newDocument.dateAcquired ||
@@ -59,7 +60,8 @@ function UploadDocument() {
     const addDocument = async () => {
         try {
             setShowValidation(false); // Hide validation popup
-    
+            setIsLoading(true); // Show loading popup
+
             const formData = new FormData();
             formData.append("documentType", newDocument.documentType);
             formData.append("documentNumber", newDocument.documentNumber);
@@ -68,23 +70,24 @@ function UploadDocument() {
             formData.append("dateAcquired", newDocument.dateAcquired);
             formData.append("quantity", newDocument.quantity);
             formData.append("documentCopy", documentCopy);
-    
+
             const response = await fetch(API_BASE + "/document/new", {
                 method: "POST",
-                body: formData,
-                credentials: 'include'
+                body: formData
             });
-    
+
             if (!response.ok) {
                 throw new Error("Failed to add document");
             }
-    
+
             const data = await response.json();
             console.log("Document added successfully:", data);
-    
+
             setUploadSuccess(true);
         } catch (error) {
             console.error("Error adding document:", error.message);
+        } finally {
+            setIsLoading(false); // Hide loading popup
         }
     };
 
@@ -94,34 +97,33 @@ function UploadDocument() {
 
     if (uploadSuccess) {
         return (
-            
             <div className="successful-upload">
                 <div className="header">
                     <a href="/">
-                        <img src={logo} alt="" id="asi-logo" />
+                        <img src={logo} alt="ASI Logo" id="asi-logo" />
                     </a>
                     {isAdminLoggedIn ? (
                         <div id="admin-greeting" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                        Hello, Admin!
-                        {isHovering && (
-                            <div id="admin-dropdown">
-                            <button className="admin-button" onClick={handleLogout}>Sign out</button>
-                            </div>
-                        )}
+                            Hello, Admin!
+                            {isHovering && (
+                                <div id="admin-dropdown">
+                                    <button className="admin-button" onClick={handleLogout}>Sign out</button>
+                                </div>
+                            )}
                         </div>
                     ) : (
                         <div id="admin-login-div">
-                        {!isLoginFormVisible && (
-                            <text id="admin-login-button" onClick={() => setIsLoginFormVisible(true)}>Sign in</text>
-                        )}
+                            {!isLoginFormVisible && (
+                                <span id="admin-login-button" onClick={() => setIsLoginFormVisible(true)}>Sign in</span>
+                            )}
                         </div>
                     )}
                     {isLoginFormVisible && !isAdminLoggedIn && (
                         <div className="admin-login-form">
-                        <AdminSignin />
+                            <AdminSignin />
                         </div>
                     )}
-                    </div>
+                </div>
                 <div className="upload-form-success">
                     Uploading Successful!
                     <div className="form-space">
@@ -135,163 +137,137 @@ function UploadDocument() {
                                 <p id="field">{newDocument.uploaderName}</p>
                             </div>
                             <div className="input-field">
-                                Description 
+                                Description
                                 <p id="field">{newDocument.description}</p>
-                                
                             </div>
                             <div className="input-field">
                                 Date Acquired
                                 <p id="field">{newDocument.dateAcquired}</p>
-                                
                             </div>
                         </div>
                         <div className="right-side">
-
                             <div className="input-field">
-                                Document Number 
+                                Document Number
                                 <p id="field">{newDocument.documentNumber}</p>
                             </div>
                             <div className="input-field">
                                 Quantity
                                 <p id="field">{newDocument.quantity}</p>
-                            
                             </div>
                         </div>
-                        
                     </div>
                     <div className="return-button">
                         <button id="return-home" onClick={handleReturnToHomepage}>Return to Homepage</button>
                     </div>
                 </div>
-                
             </div>
         );
     }
 
     return (
         <>
-          
             <div className="page-body">
                 <div className="header">
                     <a href="/">
-                        <img src={logo} alt="" id="asi-logo" />
+                        <img src={logo} alt="ASI Logo" id="asi-logo" />
                     </a>
                     {isAdminLoggedIn ? (
                         <div id="admin-greeting" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                        Hello, Admin!
-                        {isHovering && (
-                            <div id="admin-dropdown">
-                            <button className="admin-button" onClick={handleLogout}>Sign out</button>
-                            </div>
-                        )}
+                            Hello, Admin!
+                            {isHovering && (
+                                <div id="admin-dropdown">
+                                    <button className="admin-button" onClick={handleLogout}>Sign out</button>
+                                </div>
+                            )}
                         </div>
                     ) : (
                         <div id="admin-login-div">
-                        {!isLoginFormVisible && (
-                            <text id="admin-login-button" onClick={() => setIsLoginFormVisible(true)}>Sign in</text>
-                        )}
+                            {!isLoginFormVisible && (
+                                <span id="admin-login-button" onClick={() => setIsLoginFormVisible(true)}>Sign in</span>
+                            )}
                         </div>
                     )}
                     {isLoginFormVisible && !isAdminLoggedIn && (
                         <div className="admin-login-form">
-                        <AdminSignin />
+                            <AdminSignin />
                         </div>
                     )}
                 </div>
 
-
                 <div className="upload-form">
-                Upload Document
-                <div className="form-space">
-                    <div className="left-side">
-
-                        <div className="input-field">
-                            Document Type<br/>
-                            <select
-                                className="add-document-input" id="field"
-                                onChange={(e) =>
-                                    setNewDocument({ ...newDocument, documentType: e.target.value })
-                                }
-                                value={newDocument.documentType}
-                            >
-                                <option value="">Select Document Type</option>
-                                <option value="ICS">ICS</option>
-                                <option value="PAR">PAR</option>
-                            </select><br/>
+                    Upload Document
+                    <div className="form-space">
+                        <div className="left-side">
+                            <div className="input-field">
+                                Document Type<br/>
+                                <select
+                                    className="add-document-input" id="field"
+                                    onChange={(e) => setNewDocument({ ...newDocument, documentType: e.target.value })}
+                                    value={newDocument.documentType}
+                                >
+                                    <option value="">Select Document Type</option>
+                                    <option value="ICS">ICS</option>
+                                    <option value="PAR">PAR</option>
+                                </select><br/>
+                            </div>
+                            <div className="input-field">
+                                Name<br/>
+                                <input
+                                    type="text" id="field"
+                                    placeholder=""
+                                    value={newDocument.uploaderName}
+                                    onChange={(e) => setNewDocument({ ...newDocument, uploaderName: e.target.value })}
+                                /><br/>
+                            </div>
+                            <div className="input-field">
+                                Description<br/>
+                                <input
+                                    type="text" id="field"
+                                    placeholder=""
+                                    value={newDocument.description}
+                                    onChange={(e) => setNewDocument({ ...newDocument, description: e.target.value })}
+                                /><br/>
+                            </div>
+                            <div className="input-field">
+                                Date Acquired<br/>
+                                <input
+                                    type="date" id="field"
+                                    placeholder=""
+                                    value={newDocument.dateAcquired}
+                                    onChange={(e) => setNewDocument({ ...newDocument, dateAcquired: e.target.value })}
+                                />
+                            </div>
                         </div>
-
-                        <div className="input-field">
-                            Name<br/>
-                            <input
-                                type="text" id="field"
-                                placeholder=""
-                                value={newDocument.uploaderName}
-                                onChange={(e) =>
-                                    setNewDocument({ ...newDocument, uploaderName: e.target.value })
-                                }
-                            /><br/>
-                        </div>
-
-                        <div className="input-field">
-                            Description<br/>
-                            <input
-                                type="text" id="field"
-                                placeholder=""
-                                value={newDocument.description}
-                                onChange={(e) =>
-                                    setNewDocument({ ...newDocument, description: e.target.value })
-                                }
-                            /><br/>
-                        </div>
-                        <div className="input-field">
-                            Date Acquired<br/>
-                            <input
-                                type="date" id="field"
-                                placeholder=""
-                                value={newDocument.dateAcquired}
-                                onChange={(e) =>
-                                    setNewDocument({ ...newDocument, dateAcquired: e.target.value })
-                                }
-                            />
-                        </div>
-                    </div>
-                    <div className="right-side">
-                        <div className="input-field">
+                        <div className="right-side">
+                            <div className="input-field">
                                 Document Number<br/>
                                 <input
                                     type="number" id="field"
                                     placeholder=""
                                     value={newDocument.documentNumber}
-                                    onChange={(e) =>
-                                        setNewDocument({ ...newDocument, documentNumber: e.target.value })
-                                    }
+                                    onChange={(e) => setNewDocument({ ...newDocument, documentNumber: e.target.value })}
                                 /><br/>
                             </div>
-                        <div className="input-field">
-                            Quantity<br/>
-                            <input
-                                type="number" id="field"
-                                placeholder=""
-                                value={newDocument.quantity}
-                                onChange={(e) =>
-                                    setNewDocument({ ...newDocument, quantity: e.target.value })
-                                }
-                            /><br/>
+                            <div className="input-field">
+                                Quantity<br/>
+                                <input
+                                    type="number" id="field"
+                                    placeholder=""
+                                    value={newDocument.quantity}
+                                    onChange={(e) => setNewDocument({ ...newDocument, quantity: e.target.value })}
+                                /><br/>
+                            </div>
+                            <div className="input-field">
+                                Copy of Document<br/>
+                                <input
+                                    type="file" id="file-field"
+                                    onChange={handleFileChange}
+                                    accept="application/pdf"
+                                />
+                            </div>
                         </div>
-                        <div className="input-field">
-                            Copy of Document<br/>
-                            <input
-                                type="file" id="file-field"
-                                onChange={handleFileChange}
-                                accept="application/pdf"
-                            />
-                        </div>
-                        
-                        
                     </div>
-                </div>                
-                <button onClick={handleSubmit} id="submit-button">UPLOAD</button>
-                
+                    <button onClick={handleSubmit} id="submit-button">UPLOAD</button>
                 </div>
                 {showValidation && (
                     <div className="validation-popup">
@@ -306,7 +282,13 @@ function UploadDocument() {
                         </div>
                     </div>
                 )}
-                
+                {isLoading && (
+                    <div className="loading-popup">
+                        <div className="loading-content">
+                            <p>Uploading, please wait...</p>
+                        </div>
+                    </div>
+                )}
             </div>
         </>
     );
