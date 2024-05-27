@@ -7,25 +7,27 @@ import AdminSignin from "./AdminSignin";
 const API_BASE = "https://asi-ems-backend-1.onrender.com";
 
 function FindDocument({ isAdminLoggedIn }) {
-
     const [documents, setDocuments] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState("");
     const [filteredDocuments, setFilteredDocuments] = useState([]);
     const [isHovering, setIsHovering] = useState(false);
     const [isLoginFormVisible, setIsLoginFormVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(true); // Loading state
 
     useEffect(() => {
         getDocuments();
     }, []);
 
     const getDocuments = () => {
+        setIsLoading(true); // Set loading to true when fetching starts
         fetch(API_BASE + "/documents")
             .then((res) => res.json())
             .then((data) => {
                 setDocuments(data);
                 setFilteredDocuments(data);
             })
-            .catch((err) => console.error("Error: ", err));
+            .catch((err) => console.error("Error: ", err))
+            .finally(() => setIsLoading(false)); // Set loading to false when fetching ends
     };
 
     const handleViewDocument = async (documentId) => {
@@ -98,32 +100,32 @@ function FindDocument({ isAdminLoggedIn }) {
 
     return (
         <>
-                <div className="header">
-                    <a href="/">
-                        <img src={logo} alt="" id="asi-logo" />
-                    </a>
-                    {isAdminLoggedIn ? (
-                        <div id="admin-greeting" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+            <div className="header">
+                <a href="/">
+                    <img src={logo} alt="" id="asi-logo" />
+                </a>
+                {isAdminLoggedIn ? (
+                    <div id="admin-greeting" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                         Hello, Admin!
                         {isHovering && (
                             <div id="admin-dropdown">
-                            <button className="admin-button" onClick={handleLogout}>Sign out</button>
+                                <button className="admin-button" onClick={handleLogout}>Sign out</button>
                             </div>
                         )}
-                        </div>
-                    ) : (
-                        <div id="admin-login-div">
+                    </div>
+                ) : (
+                    <div id="admin-login-div">
                         {!isLoginFormVisible && (
                             <text id="admin-login-button" onClick={() => setIsLoginFormVisible(true)}>Sign in</text>
                         )}
-                        </div>
-                    )}
-                    {isLoginFormVisible && !isAdminLoggedIn && (
-                        <div className="admin-login-form">
+                    </div>
+                )}
+                {isLoginFormVisible && !isAdminLoggedIn && (
+                    <div className="admin-login-form">
                         <AdminSignin />
-                        </div>
-                    )}
-                </div>
+                    </div>
+                )}
+            </div>
             <div className="docs-body">
                 <div className="document-list">
                     <div className="title-part">
@@ -147,47 +149,49 @@ function FindDocument({ isAdminLoggedIn }) {
                         </button>
                     </div>
                     <div id="doc-count">
-                        Showing {filteredDocuments.length} documents
+                        {isLoading ? "Fetching uploaded documents..." : `Showing ${filteredDocuments.length} documents`}
                     </div>
-                    <ul className="docs-area">
-                        <div className="list-of-docs">
-                        {filteredDocuments.map((document) => (
-                            <div key={document._id} id="uploaded-doc-line">
-                                <div className="doc-number">{document.documentNumber}</div>
-                                <div className="doc-uploaderName">
-                                    <p>{document.uploaderName}</p>
-                                </div>
-                                <div className="doc-documentType">
-                                    <p>{document.documentType}</p>
-                                </div>
-                                <div className="doc-description">
-                                    <p>{document.description}</p>
-                                </div>
-                                <div className="doc-buttons">
-                                    <button
-                                        className="view-button"
-                                        onClick={() => handleViewDocument(document._id)}
-                                    >
-                                        View Document
-                                    </button>
-                                    {isAdminLoggedIn && (
-                                        <button
-                                            className="delete-button"
-                                            onClick={() => handleDeleteDocument(document._id)}
-                                        >
-                                            Delete Document
-                                        </button>
-                                    )}
-                                </div>
+                    {isLoading ? (
+                        <div className="loading-screen">Loading documents, please wait...</div>
+                    ) : (
+                        <ul className="docs-area">
+                            <div className="list-of-docs">
+                                {filteredDocuments.map((document) => (
+                                    <div key={document._id} id="uploaded-doc-line">
+                                        <div className="doc-number">{document.documentNumber}</div>
+                                        <div className="doc-uploaderName">
+                                            <p>{document.uploaderName}</p>
+                                        </div>
+                                        <div className="doc-documentType">
+                                            <p>{document.documentType}</p>
+                                        </div>
+                                        <div className="doc-description">
+                                            <p>{document.description}</p>
+                                        </div>
+                                        <div className="doc-buttons">
+                                            <button
+                                                className="view-button"
+                                                onClick={() => handleViewDocument(document._id)}
+                                            >
+                                                View Document
+                                            </button>
+                                            {isAdminLoggedIn && (
+                                                <button
+                                                    className="delete-button"
+                                                    onClick={() => handleDeleteDocument(document._id)}
+                                                >
+                                                    Delete Document
+                                                </button>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
-                        </div>
-                        
-                    </ul>
+                        </ul>
+                    )}
                 </div>
             </div>
         </>
-        
     );
 }
 
