@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "./images/logo-asi.png";
-import logo_gif from "./images/asi-rotating.png";
+import logo_gif from "./images/asi-rotating.gif";
 import "./UploadDocument.css";
 import AdminSignin from "./AdminSignin";
 
