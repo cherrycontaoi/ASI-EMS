@@ -130,11 +130,11 @@ function UploadDocument() {
                             <div className="input-field">
                                 Document Type
                                 <text id="field">{newDocument.documentType}</text>
-                            </div>
+                            </div><br/>
                             <div className="input-field">
                                 Uploader Name
                                 <text id="field">{newDocument.uploaderName}</text>
-                            </div>
+                            </div><br/>
                             <div className="input-field">
                                 Description
                                 <text id="field">{newDocument.description}</text>
@@ -142,7 +142,7 @@ function UploadDocument() {
                             <div className="input-field">
                                 Date Acquired
                                 <text id="field">{newDocument.dateAcquired}</text>
-                            </div><br/>
+                            </div>
                         </div>
                         <div className="right-side">
                             <div className="input-field">
