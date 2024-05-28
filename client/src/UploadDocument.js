@@ -130,28 +130,28 @@ function UploadDocument() {
                             <div className="input-field">
                                 Document Type
                                 <text id="field">{newDocument.documentType}</text>
-                            </div><br/>
+                            </div>
                             <div className="input-field">
                                 Uploader Name
                                 <text id="field">{newDocument.uploaderName}</text>
-                            </div><br/>
+                            </div>
                             <div className="input-field">
                                 Description
-                                <p id="field">{newDocument.description}</p>
+                                <text id="field">{newDocument.description}</text>
                             </div><br/>
                             <div className="input-field">
                                 Date Acquired
-                                <p id="field">{newDocument.dateAcquired}</p>
+                                <text id="field">{newDocument.dateAcquired}</text>
                             </div><br/>
                         </div>
                         <div className="right-side">
                             <div className="input-field">
                                 Document Number
-                                <p id="field">{newDocument.documentNumber}</p>
+                                <text id="field">{newDocument.documentNumber}</text>
                             </div><br/>
                             <div className="input-field">
                                 Quantity
-                                <p id="field">{newDocument.quantity}</p>
+                                <text id="field">{newDocument.quantity}</text>
                             </div>
                         </div>
                     </div>
