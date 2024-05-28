@@ -128,11 +128,11 @@ function UploadDocument() {
                     <div className="form-space">
                         <div className="left-side">
                             <div className="input-field">
-                                Document Type
+                                Document Type<br/>
                                 <p id="field">{newDocument.documentType}</p>
                             </div>
                             <div className="input-field">
-                                Uploader Name
+                                Uploader Name<br/>
                                 <p id="field">{newDocument.uploaderName}</p>
                             </div>
                             <div className="input-field">
