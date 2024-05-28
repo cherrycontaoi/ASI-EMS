@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "./images/logo-asi.png";
-import logo_gif from "./images/asi-rotating.gif";
+//import logo_gif from "./images/asi-rotating.gif";
 import "./UploadDocument.css";
 import AdminSignin from "./AdminSignin";
 
@@ -285,7 +285,7 @@ function UploadDocument() {
                 {isLoading && (
                     <div className="loading-popup">
                         <div className="loading-content">
-                            <img src={logo_gif} />
+                            
                             <p>Uploading, please wait...</p>
                         </div>
                     </div>
