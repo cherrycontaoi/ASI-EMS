@@ -77,9 +77,10 @@
 #field {
     padding: 5px;
     width: 320px;
+    height: 35px;
     border: solid;
     border-color: #DBDBDB;
-    overflow: scroll;
+    overflow: hidden;
 }
 
 #submit-button {
